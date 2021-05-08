@@ -1,0 +1,173 @@
+<!--This page contains the molecule editor and the button to get input files-->
+<html>
+<!--The head contains link to the molecule editor files and functions for showing the app/SMILES-->
+<head>
+    <!--Meta data which should go to all the html files-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Web app to predict solubility of organic compounds based on Causal Structure Property Relationship">
+    <meta name="author" content="Samuel Boobier">
+
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+    <title>CAUSol solubility prediction tool: Part 1</title>
+    <script type="text/javascript" language="javascript" src={{ url_for('static', filename='kekule/kekule.min.js') }}></script>
+    
+    <!--Additional styling for input buttons-->
+    <style>
+        em {
+            background-color: rgb(102, 255, 255);
+        }
+    </style>
+
+    <!-- Kekule.js -->
+    <script src={{ url_for('static', filename='kekule/kekule.js?modules=chemWidget,openbabel')}}></script>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="kekule/themes/default/kekule.css")}} />
+    <script>
+        var chemEditor;
+        var chemComposer;
+        function init()
+        {
+        /*
+        var elem = document.getElementById('chemComposer');
+        var chemEditor = new Kekule.Editor.ChemSpaceEditor(document, null, Kekule.Render.RendererType.R2D);
+        chemComposer = new Kekule.Editor.Composer(elem, chemEditor);
+        */
+        chemComposer = Kekule.Widget.getWidgetById('chemComposer');
+        // Set displayed buttons in common and zoom toolbar
+        chemComposer.setCommonToolButtons(['newDoc', 'zoomIn', 'zoomOut']);
+
+        // Set displayed buttons in chem toolbar
+        chemComposer.setChemToolButtons(['manipulate', 'erase', 'bond', 'atomAndFormula', 'ring']);
+
+        // Set available object modifiers categories
+        //composer.setAllowedObjModifierCategories([
+        //Kekule.Editor.ObjModifier.Category.GENERAL, Kekule.Editor.ObjModifier.Category.CHEM_STRUCTURE
+        /* Kekule.Editor.ObjModifier.Category.STYLE, Kekule.Editor.ObjModifier.Category.GLYPH */
+        //]);
+        //chemComposer.setAutoResizeConstraints({width: 1, height: 1})
+        //.setEnableDimensionTransform(true).setAutoSetMinDimension(true);
+        }
+        Kekule.X.domReady(init);
+  </script>
+</head>
+
+<body>
+
+	<div id="header">
+        <div>
+            <ul id="navigation">
+                <li>
+                    <a href="http://baonguyen.group/index.html">Home</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/research.html">Research</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/people.html">People</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/publications.html">Publications</a>
+                </li>
+                <li>
+                    <a href="https://leeds365.sharepoint.com/sites/TEAM-BNGroup">For members</a>
+                </li>
+                <li class="active">
+                    <a href="http://baonguyen.group/software.html">Software</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+	<div id="contents">
+	<a href="{{ url_for('home')}}"><img src="/solubility/static/CAUSol_Logo.png"/ width=400></a>
+        <br><br><br>
+		<div id="features">
+            <h1>Part 1: Create Input Files for Gaussian 09</h1>
+            <p>
+                Draw your compound below, or skip to <span style="color:blue">Step 2</span> if you already know its SMILES string. <span style="color:blue">Step 2</span> will generate two input files that must be run in Gaussian 09 (optimisation and frequency calculations in gas and solution phases).
+            </p>
+            <h2><span style="color:blue">Step 1</span>: Draw the structure of the compound you want to predict</h2>
+            <p>
+                You can change atoms and bonds by selecting them and using the popped up options. Skip to <span style="color:blue">Step 2</span>    if you already know its SMILES code.
+            </p>
+            
+            <!--Get the molecule editor-->
+            <p>
+                <div id="chemComposer" style="width:800px;height:400px" data-widget="Kekule.Editor.Composer" data-chem-obj="url(#chemDoc1)"></div>
+            </p>                 
+            <p style="text-align:center">
+                    <button1 onclick="autoFill()" class="BUTTON_GDR" style="width:400px">Transfer Structure</button1>
+            </p>
+		</div>
+
+		<!--Get the gas input-->
+		
+        <div id="features">
+            <h2><span style="color:blue">Step 2</span>: Generate Gaussian 09 Input Files</h2>
+            <p>
+                Either transfer structure from <span style="color:blue">Step 1</span> or write your own SMILES string. Select your solvent and method, and download your Gaussian 09 input files.
+            </p>
+		</div>
+
+		<!--This next line is key for getting the input to go back to python-->
+		<form action="{{ url_for("gfg")}}" method="post">
+			<div style="text-align:center">
+                <p>
+                    <input type="text" id="SMILES3" name="SMILES" placeholder="SMILES">
+                    <select name= "Solvent" id="Solvent">
+                        <option value="Water">Water</option>
+                        <option value="Ethanol">Ethanol</option>
+                        <option value="Benzene">Benzene</option>
+                        <option value="Acetone">Acetone</option>
+  			       </select>
+                   <select name= "ESM" id="ESM">
+                        <option value="DFT">DFT</option>
+                        <option value="PM6">PM6</option>
+                   </select>
+                </p>
+            </div>
+            <div style="text-align:center">
+  			   
+               <button type="submit" class="BUTTON_GDR" style="width:420px;font-size:16px;font-weight:100">Download Input Files</button>
+            </div>
+		</form>
+		<br>
+        <div style="text-align:center">
+		  <a href="{{ url_for('models') }}" class="BUTTON_GDR" style="width:400px">Part 2: Make Predictions from Gaussian 09 Output Files</a>
+        </div>
+        <br>
+        <H1>Notes</H1>
+        <p>
+        This model is intended for small organic uncharged molecules (MW < 500 Da); currently mixtures or salts are not supported.
+        </p>
+        <p>
+        DFT selects <strong>b3lyp/6-31+G(d)</strong> method; PM6 selects <strong>PM6</strong>, a semi-empirical method. PM6 is much faster but some loss in accuracy may occur.
+        </p>
+        <p>
+        For information about the models, descriptors, training data and performance, read our <a href="https://www.nature.com/articles/s41467-020-19594-z">publication</a> in <i>Nature Communications</i> journal.
+        </p>
+
+
+
+		    <!--Functiona to link the Kekule composer and the SMILES input box-->
+        <script type="text/javascript">
+            function autoFill() {
+                //get the molecule object from the chemComposer widget
+                var molecule = chemComposer.getChemObj(); 
+                //get the smiles :)
+                var smiles = Kekule.IO.saveFormatData(molecule, 'smi');
+                //Set the input box value to the SMILES string
+                document.getElementById('SMILES3').value = smiles;
+            }
+        </script>
+	<br>
+                <div style="text-align:center">
+                <p style="font-size:12px">
+                Disclaimer: The authors accept no liability for the topicality, correctness, completeness or quality of the provided predict or how the predictions are subsequently used.  The authors expressly reserve the right to change, supplement or delete parts of the pages or the entire tool without separate announcement or to discontinue the tool temporarily or permanently.
+                </p>
+                </div>
+	</div>
+</body>
+</html> 

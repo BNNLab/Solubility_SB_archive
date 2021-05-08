@@ -1,0 +1,57 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CAUSol solubility prediction tool: Error</title>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+</head>
+<body>
+	<div id="header">
+        <div>
+            <ul id="navigation">
+                <li>
+                    <a href="http://baonguyen.group/index.html">Home</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/research.html">Research</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/people.html">People</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/publications.html">Publications</a>
+                </li>
+                <li>
+                    <a href="https://leeds365.sharepoint.com/sites/TEAM-BNGroup">For members</a>
+                </li>
+                <li class="active">
+                    <a href="http://baonguyen.group/software.html">Software</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+	<div id="contents" style="text-align:center">
+	<a href="{{ url_for('home')}}"><img src="/solubility/static/CAUSol_Logo.png"/ width=400></a>
+	<p>
+	<H1>We Have Had a Problem </H1>
+	</p>
+	<H2>Invalid SMILES or Server Error </H2> <br>
+	<p>
+	Check SMILES or try again later. <br>
+	</p>
+	<p style="text-align:center">
+		<a href="{{ url_for('gfg') }}" class="BUTTON_GDR">Return to Editor</a>
+	</p>
+	<br>
+        <div>
+        <p style="font-size:12px">
+        Disclaimer: The authors accept no liability for the topicality, correctness, completeness or quality of the provided predict or how the predictions are subsequently used.  The authors expressly reserve the right to change, supplement or delete parts of the pages or the entire tool without separate announcement or to discontinue the tool temporarily or permanently.
+        </p>
+        </div>
+	</div>
+
+</body>
+
+</html>

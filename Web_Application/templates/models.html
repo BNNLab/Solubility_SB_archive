@@ -1,0 +1,102 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CAUSol solubility prediction tool: Part 2</title>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+</head>
+<body>
+	<div id="header">
+        <div>
+            <ul id="navigation">
+                <li>
+                    <a href="http://baonguyen.group/index.html">Home</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/research.html">Research</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/people.html">People</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/publications.html">Publications</a>
+                </li>
+                <li>
+                    <a href="https://leeds365.sharepoint.com/sites/TEAM-BNGroup">For members</a>
+                </li>
+                <li class="active">
+                    <a href="http://baonguyen.group/software.html">Software</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+	<div id="contents">
+		<a href="{{ url_for('home')}}"><img src="/solubility/static/CAUSol_Logo.png"/ width=400></a>
+		<br><br><br>
+		<H1>Part 2: Solubility Prediction</H1>
+		<p>
+			Results are presented as the prediction using ExtraTrees (ET), Support Vector Machine (SVM), Artificial Neural Networks (ANN), Gaussian Process (GP), and the mean and median of these four predictions. Predictions are given in units of LogS (log<sub>10</sub> c, where c is concentration in mol/L).
+		</p>
+		<p>
+			As an estimate of error, the upper and lower range of GP prediction (1 SD) is given.
+		</p>
+		<form method="POST" action="" enctype="multipart/form-data">
+			<p>
+				Upload Gas Gaussian 09 log file (<i>Hint: this is the output from gas.com</i>)
+			</p>
+			<p>
+				<div style="text-align:center">
+					<input type="file" name="gas_file">
+				</div>
+			</p>
+			<p>
+				Upload Solution Gaussian 09 log file: (<i>Hint: this is the output from sol.com</i>)
+			</p>
+	  		<p>
+	  			<div style="text-align:center">
+	  				<input type="file" name="sol_file">
+	  			</div>
+	  		</p>
+	  		<p>
+	  			DFT or PM6? (<i>Hint: this was chosen in Part 1</i>)
+	  		</p>
+	  		<p>
+	  			<div style="text-align:center">
+	  				<select name= "ESM" id="ESM">
+                        <option value="DFT">DFT</option>
+                        <option value="PM6">PM6</option>
+                   </select>
+	  			</div>
+	  		</p>
+	  		<p>
+	  			Provide Melting Point in &#8451 (<i>leave blank to run without melting point, including the melting point improves the accuracy in organic solvents</i>):
+	  		</p>
+	  		<p>
+	  			<div style="text-align:center">
+	  				<input type="text" id="MP" name="MP" placeholder="MP (&#8451)">
+	  			</div>
+	  		</p>
+	  		
+	  	<p>
+	  		<div style="text-align:center">
+	  			<button type="submit" style="width:400px" class="BUTTON_GDR">Run Prediction</button>
+	  		</div>
+	  	</p>
+    </form>
+    {% for message in get_flashed_messages() %}
+        <p><span style="color:red">{{ message }}</span></p>
+    {% endfor %}
+	
+	<br>
+                <div style="text-align:center">
+                <p style="font-size:12px">
+                Disclaimer: The authors accept no liability for the topicality, correctness, completeness or quality of the provided predict or how the predictions are subsequently used.  The authors expressly reserve the right to change, supplement or delete parts of the pages or the entire tool without separate announcement or to discontinue the tool temporarily or permanently.
+                </p>
+                </div>
+
+	</div>
+</body>
+
+</html>

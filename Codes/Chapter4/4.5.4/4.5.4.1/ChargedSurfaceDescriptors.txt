@@ -1,0 +1,111 @@
+The electron density from the initial DFT calculation in Gaussian 09 was used to create an isosurface encompassing 95 % of the electron density using Multiwfn programme. This is transferred back to Gaussian 09 to get a .cube file (a standard electrostatic potential file format). This is returned to Multiwfn, where the charge at these input points is extracted.
+
+Procedure summary:
+1.	Produce .fchk file for each molecule
+2.	Produce "wfn_pt.txt" for each molecule to use an input for multiwfn
+3.	Run wfn_pt.txt in multiwfn for each .fchk file to get cubegenpt.txt (this contains the points at which Gaussian 09 will compute ESP)
+4.	Get cube file using Gaussian 09
+5.	Produce "wfn_input2.txt" for each molecule to use as an input file for multiwfn
+6.	Run wfn_input2.txt for each .fchk file to get vtx.txt (this contains the x,y,z of each point on the isosurface and the ESP associated with it)
+7.	Format to get .csv file with X, Y, Z, ESP
+
+Codes:
+
+1.	.fchk files
+# bash script which requires Gaussian 09 and its associated programmes installed
+# .fchk files produced in Gaussian 09: (how to do using UoL ARC2 HPC)
+# ```
+# module add gaussian
+# for f in *.chk; do formchk "$f"; done
+# ```
+# Organise each .fchk files to be in a folder of the same name
+
+2.	Produce "wfn_pt.txt" for each molecule to use an input for multiwfn
+# python script
+# for each folder containing .fchk file, make a file called "wfn_pt.txt"
+import os
+dir1="F:\\Data\\reaxys_acetone\\DFT\\Sol\\wfn"
+for folders in os.listdir(dir1):
+    f = open(dir1+ "\\" + folders + "\\wfn_pt.txt","a")
+    f.write("12\n")
+    f.write("5\n")
+    f.write("2\n")
+    f.write("0\n")
+    f.write("M:\\books.csv") #spike with bad file to terminate program
+    f.close()
+
+3.	Run wfn_pt.txt in multiwfn for each .fchk file to get cubegenpt.txt
+# 
+# wfn_pt.txt has the commands to run inside multiwfn. Use a simple loop in terminal in get output:
+# bash script using Multiwfn command line feature
+# ```
+# for f in *;
+# do cd "$f";
+# ./Multiwfn.exe "$f".fchk < wfn_pt.txt > null;
+# cd ..;
+# done
+# ```
+
+4.	Use Gaussian 09 to get .cube file
+# bash script which requires Gaussian 09 and its associated programmes installed
+# ```
+# for f in *;
+# do cd "$f";
+# cubegen 0 potential "$f".fchk pot.cube -5 h < cubegenpt.txt;
+# cd ..;
+# done
+# ```
+
+5.	Produce "wfn_input2.txt" for each molecule to use as an input file for multiwfn
+#python script
+#for each folder containing .fchk file, make a file called "wfn_input2.txt"
+import os
+dir1="F:\\Data\\reaxys_acetone\\DFT\\Sol\\wfn_ace"
+for folders in os.listdir(dir1):
+    f = open(dir1+ "\\" + folders + "\\wfn_input2.txt","a")
+    f.write("12\n")
+    f.write("5\n")
+    f.write("2\n")
+    f.write("0\n")
+    f.write(dir1 + "\\" + folders + "\pot.cube\n")
+    f.write("7")
+    f.close()
+
+6.	Run wfn_input2.txt for each .fchk file to get vtx.txt (this contains the x,y,z of each point on the isosurface and the ESP associated with it)
+# bash script using Multiwfn command line feature
+# ```
+# for f in *;
+# do cd "$f";
+# ./Multiwfn.exe "$f".fchk < wfn_input2.txt > null;
+# cd ..;
+# done
+# ```
+
+7.	Format to get .csv file with X, Y, Z, ESP
+##python script to reformat Multiwfn output into .csv files
+import csv,os,sys
+import pandas as pd
+##folder of folders for each molecule containing raw data
+dir1="wfn_ace" 
+##folder to put output
+dir2="wfn_esp" 
+os.makedirs(dir2)
+for folders in os.listdir(dir1):
+    f = open(dir1  + "\\" + folders + "\\vtx.txt","r")
+    data=[]
+    for line in f:
+        data.append(line)
+    for i in range(len(data)):
+        data[i]=data[i].split()
+    del(data[0])
+    data2=[]
+    for f in range(len(data)):
+        data3=[]
+        data3.append(data[f][0])
+        data3.append(data[f][1])
+        data3.append(data[f][2])
+        data3.append(data[f][3])
+        data2.append(data3)
+    names=['X','Y','Z','ESP']
+    df=pd.DataFrame(data=data2,columns=names)
+    df.to_csv(dir2 + "\\" + folders + ".csv",index=False)

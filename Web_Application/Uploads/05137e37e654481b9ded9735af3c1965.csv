@@ -1,0 +1,9 @@
+Method,Algorithm Explanation,Prediction (LogS)
+ET,ExtraTrees Prediction,-1.4758997813160022
+SVM,Support Vector Machine Prediction,-1.3024978611321134
+ANN,Artificial Neural Networks Prediction,2.057048642681747
+GP,Gaussian Process Regression Prediction,-1.3670412639719132
+GP_Upper,Upper limit of GPR prediction (error to 1 SD),-0.39817360398310786
+GP_Lower,Lower limit of GPR prediction (error to 1 SD),-2.3359089239607185
+Consensus_Mean,"Mean prediction from ET, SVM, ANN and GPR",-0.5220975659345705
+Consensus_Median,"Median prediction from ET, SVM, ANN and GPR",-1.3347695625520133

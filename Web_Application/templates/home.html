@@ -1,0 +1,91 @@
+<!--Very basic home page with correct way of doing hyperlinks in Flask-->
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CAUSol solubility prediction tool</title>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+</head>
+<body>
+	<div id="header">
+        <div>
+            <ul id="navigation">
+                <li>
+                    <a href="http://baonguyen.group/index.html">Home</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/research.html">Research</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/people.html">People</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/publications.html">Publications</a>
+                </li>
+                <li>
+                    <a href="https://leeds365.sharepoint.com/sites/TEAM-BNGroup">For members</a>
+                </li>
+                <li class="active">
+                    <a href="http://baonguyen.group/software.html">Software</a>
+                </li>
+                <li>
+                    <a href="http://baonguyen.group/contact.html">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="contents">
+	<a href="{{ url_for('home')}}"><img src="/solubility/static/CAUSol_Logo.png"/ width=400></a>
+		<br><br><br>
+    	<div id="features">
+    		<p>
+				This is the solubility prediction tool for calculating the solubility of small organic molecules in water and organic solvents, developed by the <a href="https://www.iprd.leeds.ac.uk">iPRD</a> at University of Leeds.
+			</p>
+			<p>
+				<strong>Please note: this app is only recommended for use with the most up-to-date versions of Firefox, Chrome, Opera and Microsoft Edge.</strong>
+			</p>
+			<p>
+				Details of the protocol used can be found in this publication:
+			</p>
+			<p>
+				Samuel Boobier, David R. J. Hose, A. John Blacker, Bao N. Nguyen, "Machine Learning with Physicochemical Relationships: Solubility Prediction in Organic Solvents and Water", <i>Nature Communications</i> <strong>2020</strong>, <em>11</em>, 5753 (<a href="https://www.nature.com/articles/s41467-020-19594-z">doi:10.1038/s41467-020-19594-z</a>).
+			</p>
+			<p>
+				If you are interested in an improved version of this prediction tool, with integrated work-flow, in-house training data and batch predictions, please contact <a href="mailto:b.nguyen@leeds.ac.uk">Dr Bao Nguyen</a> directly.
+			</p>
+			<H2>How to Use this Tool</H2>
+			<p>
+				This cheminformatics tool calculates descriptors based on 3D structures optimised using DFT. In <span style="color:blue">Step 1</span> the user must generate input files for a Quantum Mechanics software, Gaussian 09 from a compound of their choice. After the user has run these files on their own computer/HPC, <span style="color:blue">Step 2</span> is to upload the output files to our server, where solubility is calculated with machine learning models. 
+			</p>
+			<H2>Requirements</H2>
+			<p>
+				To use this prediction tool, you will need:</br>
+				1. Access to Gaussian 09.</br>
+				2. Melting point of the target compound (optional, recommended for non-aqueous predictions).
+			</p>
+		</div>
+		<div id="features">
+			<H2>Step 1: Create Input Files for Gaussian 09</H2>
+			<p style="text-align:center">
+				<a href="{{ url_for('gfg') }}" class="BUTTON_GDR">Create Input Files</a>
+			</p>
+		</div>
+		<div id="features">
+			<H2>Step 2: Use Gaussian 09 Output Files to Predict Solubility</H2>
+			<p style="text-align:center">
+				<a href="{{ url_for('models') }}" class="BUTTON_GDR">Predict Solubility</a>
+			</p>
+		</div>
+		<br>
+		<div style="text-align:center">
+		<p style="font-size:12px">
+		Disclaimer: The authors accept no liability for the topicality, correctness, completeness or quality of the provided predict or how the predictions are subsequently used.  The authors expressly reserve the right to change, supplement or delete parts of the pages or the entire tool without separate announcement or to discontinue the tool temporarily or permanently.
+		</p>
+		</div>
+	<br>
+	{% for number in counter %}
+	<div style="text-align:center"><p style="font-size:12px">Visitor counter: {{number}}</p></div>
+	{% endfor %}
+	</div>
+</body>
+</html>
+

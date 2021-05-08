@@ -1,0 +1,8 @@
+Name,SMILES
+mol_1,CCOCC
+mol_2,CCC(=O)[O-].[Li+]
+mol_3,CC[Se]CC
+mol_4,CC(Cl)(Cl)
+mol_5,CC(=O)CCCCCC
+mol_6,CCCCCCCCC
+mol_7,CCC.CCO
